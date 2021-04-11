@@ -4,7 +4,7 @@ import Menu from './menu';
 import "./todoList.css";
 import { setTodosList, setTodo, setTodoEdit, setTodoEditText } from '../Store';
 const Tasks = (props) => {
-  const { dispatch } = props;
+  const { dispatch, todos, todo, todoEditing} = props;
   React.useEffect(() => {
     let loadedTodos;
     const json = localStorage.getItem("todos");
@@ -67,12 +67,12 @@ const Tasks = (props) => {
         <form className="form" onSubmit={handleSubmit}>
           <input
             type="text"
-            onChange={(e) => props.dispatch(setTodo(e.target.value))}
-            value={props.todo}
+            onChange={(e) => dispatch(setTodo(e.target.value))}
+            value={todo}
           />
           <button type="submit">Ajouter la tâche</button>
         </form>
-        {props.todos.map((todo) => (
+        {todos.map((todo) => (
           <div key={todo.id} className="todo">
             <div style={{ display: "flex", justifyContent: 'space-between' }}>
               <div className="todo-text">
@@ -85,7 +85,7 @@ const Tasks = (props) => {
                   title="Cocher pour completer la tâche"
                   onChange={() => toggleComplete(todo.id)}
                 />
-                {todo.id === props.todoEditing ? (
+                {todo.id === todoEditing ? (
                   <input
                     type="text"
                     onChange={(e) => dispatch(setTodoEditText(e.target.value))}
@@ -98,7 +98,7 @@ const Tasks = (props) => {
                 : <span className="badge badge-danger">Non complétée</span>}</div>
             </div>
             <div className="todo-actions">
-              {todo.id === props.todoEditing ? (
+              {todo.id === todoEditing ? (
                 <button onClick={() => submitEdits(todo.id)}>Submit Edits</button>
               ) : (
                   <button onClick={() => dispatch(setTodoEdit(todo.id))}>Edit</button>
